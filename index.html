@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Costos Chatfuel 2026 · Dashboard</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{--ink:#1d2540;--mut:#7280a0;--p1:#4f46e5;--p2:#7c3aed;--line:#e9ecf5}
+  body{font-family:'Poppins',Arial,sans-serif;background:#f3f5fb;color:var(--ink);font-size:14px}
+  .hero{background:radial-gradient(1200px 400px at 85% -20%,rgba(255,255,255,.18),transparent),linear-gradient(120deg,#1e1b4b 0%,#4338ca 55%,#7c3aed 100%);color:#fff;padding:34px 0 86px}
+  .hero h1{font-weight:700;font-size:1.7rem;margin:0}
+  .hero p{opacity:.8;margin:4px 0 0}
+  .hero .pill{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);border-radius:30px;padding:4px 12px;font-size:12px;backdrop-filter:blur(6px)}
+  .wrap{margin-top:-62px}
+  .cardx{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px rgba(30,27,75,.06);height:100%}
+  .cardx .hd{padding:16px 20px 0}
+  .cardx .hd h2{font-size:15px;font-weight:600;margin:0}
+  .cardx .hd p{font-size:12px;color:var(--mut);margin:2px 0 0}
+  .cardx .bd{padding:10px 20px 18px}
+  .kpi{display:flex;gap:14px;align-items:center;padding:18px}
+  .kpi .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:21px;color:#fff;flex:none}
+  .kpi .l{font-size:12px;color:var(--mut)}
+  .kpi .v{font-size:1.45rem;font-weight:700;line-height:1.2}
+  .kpi .s{font-size:11px;color:var(--mut)}
+  .ic1{background:linear-gradient(135deg,#4f46e5,#818cf8)}.ic2{background:linear-gradient(135deg,#0ea5e9,#67e8f9)}
+  .ic3{background:linear-gradient(135deg,#f97316,#fdba74)}.ic4{background:linear-gradient(135deg,#10b981,#6ee7b7)}
+  .ic5{background:linear-gradient(135deg,#ec4899,#f9a8d4)}
+  .nav-pills .nav-link{border-radius:30px;color:var(--ink);font-size:13px;padding:6px 16px;background:#fff;border:1px solid var(--line);margin-right:6px;margin-bottom:6px}
+  .nav-pills .nav-link.active{background:linear-gradient(120deg,var(--p1),var(--p2));border-color:transparent;color:#fff;box-shadow:0 6px 14px rgba(79,70,229,.3)}
+  .form-switch .form-check-input:checked{background-color:var(--p1);border-color:var(--p1)}
+  .ch{position:relative;height:300px}.ch.tall{height:340px}
+  .table{font-size:12px;margin:0;white-space:nowrap}
+  .table thead th{background:#f5f6fc;color:#4a5578;font-weight:600;border-bottom:0;position:sticky;top:0}
+  .table td,.table th{padding:.55rem .65rem;text-align:right;vertical-align:middle}
+  .table td:nth-child(-n+2),.table th:nth-child(-n+2){text-align:left}
+  .table tfoot td{font-weight:700;background:#f5f6fc;border-top:2px solid var(--line)}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+  .info{color:#6366f1;cursor:help;font-size:14px;vertical-align:-1px}.popover{font-family:Poppins,Arial;font-size:12.5px;max-width:300px}
+  .zero{color:#c3c9db}
+  .bdg{font-size:11px;font-weight:500;border-radius:20px;padding:3px 9px;background:#eef0fb;color:#4338ca}
+  .notes li{font-size:12px;color:var(--mut);margin-bottom:4px}
+  footer{color:var(--mut);font-size:12px;text-align:center;padding:22px 0 30px}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3">
+      <div>
+        <h1><i class="bi bi-robot me-2"></i>Costos de bots Chatfuel</h1>
+        <p>Costo mensual y anual, conversaciones extras y remarketing por marca y cuenta</p>
+      </div>
+      <div class="d-flex gap-2"><span class="pill"><i class="bi bi-calendar3 me-1"></i>Año <span id="yr">2026</span></span><span class="pill"><i class="bi bi-currency-dollar"></i>USD</span><span class="pill"><i class="bi bi-arrow-repeat me-1"></i>Actualizado <span id="upd">10/11/2026</span></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="container wrap">
+  <div class="row g-3 mb-3" id="kpis"><div class="col-12 text-center text-muted py-4">Cargando datos…</div></div>
+  <div id="msg" class="alert alert-danger d-none"></div>
+
+  <div class="cardx mb-3"><div class="bd d-flex flex-wrap justify-content-between align-items-center gap-2 pt-3">
+    <ul class="nav nav-pills" id="pills"></ul>
+    <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" id="fSub"><label class="form-check-label" for="fSub">Mostrar suscripción anual en su mes de cobro</label></div>
+  </div></div>
+
+  <div class="row g-3">
+    <div class="col-12"><div class="cardx"><div class="hd"><h2><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Costo mensual por cuenta<i class="bi bi-info-circle info ms-1" tabindex="0" role="button" aria-label="Qué son las conversaciones extras" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" data-bs-content="Chatfuel incluye 1.000 conversaciones gratuitas al mes en cada cuenta. Lo que se muestra aquí es solo el costo de las conversaciones extras, es decir, las que se contabilizan después de pasar esas 1.000. La suscripción anual se cuenta aparte."></i></h2><p id="sub1"></p></div><div class="bd"><div class="ch tall"><canvas id="c1" role="img" aria-label="Costo mensual por cuenta"></canvas></div></div></div></div>
+    <div class="col-lg-7"><div class="cardx"><div class="hd"><h2><i class="bi bi-wallet2 me-2 text-primary"></i>Costo anual por cuenta<i class="bi bi-info-circle info ms-1" tabindex="0" role="button" aria-label="Qué son las conversaciones extras" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" data-bs-content="Chatfuel incluye 1.000 conversaciones gratuitas al mes en cada cuenta. Lo que se muestra aquí es solo el costo de las conversaciones extras, es decir, las que se contabilizan después de pasar esas 1.000. La suscripción anual se cuenta aparte."></i></h2><p>Suscripción anual + cargos por conversaciones extras</p></div><div class="bd"><div class="ch"><canvas id="c2" role="img" aria-label="Costo anual por cuenta"></canvas></div></div></div></div>
+    <div class="col-lg-5"><div class="cardx"><div class="hd"><h2><i class="bi bi-pie-chart-fill me-2 text-primary"></i>Costo anual por marca</h2><p>Participación en el gasto total</p></div><div class="bd"><div class="ch"><canvas id="c5" role="img" aria-label="Costo anual por marca"></canvas></div></div></div></div>
+    <div class="col-lg-6"><div class="cardx"><div class="hd"><h2><i class="bi bi-graph-up me-2 text-primary"></i>Conversaciones extras por mes<i class="bi bi-info-circle info ms-1" tabindex="0" role="button" aria-label="Qué son las conversaciones extras" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" data-bs-content="Chatfuel incluye 1.000 conversaciones gratuitas al mes en cada cuenta. Lo que se muestra aquí es solo el costo de las conversaciones extras, es decir, las que se contabilizan después de pasar esas 1.000. La suscripción anual se cuenta aparte."></i></h2><p>Solo meses con dato en las facturas de Chatfuel</p></div><div class="bd"><div class="ch"><canvas id="c3" role="img" aria-label="Conversaciones extras por mes"></canvas></div></div></div></div>
+    <div class="col-lg-6"><div class="cardx"><div class="hd"><h2><i class="bi bi-megaphone-fill me-2 text-primary"></i>Remarketing aproximado por cuenta</h2><p>Contactos enviados en el año (formato de remarketing)</p></div><div class="bd"><div class="ch"><canvas id="c4" role="img" aria-label="Remarketing por cuenta"></canvas></div></div></div></div>
+    <div class="col-12"><div class="cardx"><div class="hd"><h2><i class="bi bi-table me-2 text-primary"></i>Detalle por cuenta<i class="bi bi-info-circle info ms-1" tabindex="0" role="button" aria-label="Qué son las conversaciones extras" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" data-bs-content="Chatfuel incluye 1.000 conversaciones gratuitas al mes en cada cuenta. Lo que se muestra aquí es solo el costo de las conversaciones extras, es decir, las que se contabilizan después de pasar esas 1.000. La suscripción anual se cuenta aparte."></i></h2><p>Cargos por conversaciones extras por mes (USD). Más oscuro = más gasto. La suscripción va aparte.</p></div><div class="bd"><div class="table-responsive"><table class="table table-hover" id="tbl"></table></div></div></div></div>
+  </div>
+  <footer>Datos de Chatfuel · Hoja "Presupuesto chatfuel"</footer>
+</div>
+
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbxB3MlEwR-zNpbEaKLA7UpDRx_7i2_YMIgIsI00aeYw-Mf0FqdhTaaI_5YrUfM3G_Y-Cw/exec";
+const MC=["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+let DATA=[
+ {marca:"Blackwell (BGU)",cuenta:"BGU WA",plan:"IA Básica ($0.02)",fechaSub:"2026-05-19",sub:353.88,
+  precios:[99.08,120.12,115.31,132.68,80.34,77.61,45.15,65.86,58.63,74.66,27.63,0],
+  conv:[6588,7987,7667,8822,5342,5160,3002,4379,3898,4964,null,null],rm:[0, 0, 0, 0, 0, 0, 772, 272, 873, 991, 0, 0],rn:[0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0]},
+ {marca:"Blackwell (BGU)",cuenta:"BGU WA2",plan:"IA Básica ($0.02)",fechaSub:"2026-01-20",sub:353.88,
+  precios:[29.49,0,0,0,0,0,0,0,17.96,1.76,41.99,0],
+  conv:[null,null,null,null,null,null,null,null,1194,117,2792,null],rm:[0, 0, 0, 0, 0, 0, 0, 2813, 3066, 7117, 0, 0],rn:[0, 0, 0, 0, 0, 0, 0, 5, 2, 4, 0, 0]},
+ {marca:"Blackwell (BGU)",cuenta:"Blackwell - DCE",plan:"IA Avanzada GPT-4o ($0.04)",fechaSub:"2026-08-02",sub:833.88,
+  precios:[0,0,0,0,59,93.73,139,173.82,83.25,180,182.62,0],
+  conv:[null,null,null,null,null,3115,null,2452,2349,5079,5153,null],rm:[0, 0, 0, 0, 0, 0, 0, 0, 0, 1507, 0, 0],rn:[0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0]},
+ {marca:"Neumann",cuenta:"Neumann WA",plan:"IA Básica ($0.02)",fechaSub:"2026-04-14",sub:353.88,
+  precios:[0,0.56,0,2.47,0,0,0,25.52,78.99,33.67,1.31,0],
+  conv:[null,37,null,164,null,null,null,1697,5252,2239,null,null],rm:[0, 0, 0, 0, 0, 0, 0, 8951, 3294, 2440, 0, 0],rn:[0, 0, 0, 0, 0, 0, 0, 5, 1, 2, 0, 0]},
+ {marca:"IEmpresa",cuenta:"IEmpresa WA",plan:"IA Básica ($0.02)",fechaSub:"2026-05-26",sub:353.88,
+  precios:[5.59,2.17,18.02,11.93,27.31,11.90,7.35,9.10,37.92,46.04,7.64,0],
+  conv:[372,144,1198,793,1816,791,489,605,2521,3061,508,null],rm:[0, 0, 0, 0, 0, 0, 0, 2127, 1422, 2381, 0, 0],rn:[0, 0, 0, 0, 0, 0, 0, 1, 2, 5, 0, 0]},
+ {marca:"MadisonOK",cuenta:"Madison WA",plan:"IA Básica ($0.02)",fechaSub:"2026-12-10",sub:353.88,
+  precios:[0,0,0,0,0,0,0,0,0,0,0,0],conv:[null,null,null,null,null,null,null,null,null,null,null,null],rm:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],rn:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+ {marca:"ITAE",cuenta:"ITAE",plan:"IA Básica ($0.02)",fechaSub:"2026-12-10",sub:353.88,
+  precios:[0,0,6.77,29.91,0,0.23,4.65,10.00,0,0,0,0],conv:[null,null,null,null,null,null,null,null,null,null,null,null],rm:[0, 0, 0, 0, 0, 0, 0, 2365, 0, 0, 0, 0],rn:[0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]},
+ {marca:"Eurocoach",cuenta:"Eurocoach WA",plan:"IA Básica ($0.02)",fechaSub:"2026-01-26",sub:353.88,
+  precios:[0,0,0,0,0,2.39,8.17,0,0,0,0,0],
+  conv:[null,null,null,null,null,159,543,null,null,null,null,null],rm:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],rn:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+];
+const PAL=["#4f46e5","#38bdf8","#10b981","#f97316","#ec4899","#8b5cf6","#eab308","#64748b","#14b8a6","#e11d48","#0ea5e9","#a16207"];
+const BRAND_PAL=["#4f46e5","#f97316","#10b981","#8b5cf6","#ec4899","#eab308","#14b8a6","#e11d48","#0ea5e9"];
+const usd=n=>"$"+Number(n).toLocaleString("es-PE",{minimumFractionDigits:2,maximumFractionDigits:2});
+const int=n=>Number(n).toLocaleString("es-PE");
+const sum=a=>a.reduce((s,x)=>s+(x||0),0);
+Chart.defaults.font.family="Poppins, Arial, sans-serif"; Chart.defaults.font.size=12; Chart.defaults.color="#5a6685";
+Chart.defaults.plugins.legend.labels.usePointStyle=true; Chart.defaults.plugins.legend.labels.boxWidth=8;
+Chart.defaults.plugins.tooltip.backgroundColor="#1d2540"; Chart.defaults.plugins.tooltip.padding=10; Chart.defaults.plugins.tooltip.cornerRadius=8;
+const totalsPlugin={id:"totals",afterDatasetsDraw(chart){
+  const {ctx,scales:{x,y}}=chart; ctx.save(); ctx.font="600 11px Poppins, Arial"; ctx.fillStyle="#1d2540"; ctx.textAlign="center"; ctx.textBaseline="bottom";
+  chart.data.labels.forEach((_,i)=>{
+    const t=chart.data.datasets.reduce((s,d,di)=>s+(chart.isDatasetVisible(di)?(d.data[i]||0):0),0);
+    if(t>0) ctx.fillText(usd(t),x.getPixelForValue(i),y.getPixelForValue(t)-4);
+  }); ctx.restore();
+}};
+const charts={}; let MARCA="Todas";
+const mk=(id,cfg)=>{ if(charts[id]) charts[id].destroy(); charts[id]=new Chart(document.getElementById(id),cfg); };
+const grid={color:"#eceff7"};
+
+function render(){
+  const inc=document.getElementById("fSub").checked;
+  const all=DATA.map((d,i)=>({...d,remarketing:(d.remTotal!=null?d.remTotal:sum(d.rm)),color:PAL[i%PAL.length]}));
+  const rows=all.filter(d=>MARCA==="Todas"||d.marca===MARCA);
+  const extras=r=>sum(r.precios), total=r=>r.sub+extras(r);
+  const totSub=sum(rows.map(r=>r.sub)), totExt=sum(rows.map(extras)), totAll=totSub+totExt;
+  const totConv=sum(rows.map(r=>sum(r.conv))), totRem=sum(rows.map(r=>r.remarketing));
+  const pct=x=>Math.round(x/(totAll||1)*100)+"% del total";
+  document.getElementById("kpis").innerHTML=[
+    ["ic1","bi-cash-coin","Costo anual total",usd(totAll),"suscripciones + extras"],
+    ["ic2","bi-calendar-check","Suscripciones anuales",usd(totSub),pct(totSub)],
+    ["ic3","bi-chat-dots","Conversaciones extras",usd(totExt),pct(totExt)],
+    ["ic4","bi-chat-left-text","Conv. extras registradas",int(totConv),"solo meses con dato"],
+    ["ic5","bi-megaphone","Remarketing aprox.",int(totRem),"envíos (total del archivo)"]
+  ].map(k=>`<div class="col-12 col-sm-6 col-lg"><div class="cardx kpi"><div class="ic ${k[0]}"><i class="bi ${k[1]}"></i></div><div><div class="l">${k[2]}${/extras/.test(k[2])?`<i class="bi bi-info-circle info ms-1" tabindex="0" role="button" aria-label="Qué son las conversaciones extras" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="bottom" data-bs-content="Chatfuel incluye 1.000 conversaciones gratuitas al mes en cada cuenta. Lo que se muestra aquí es solo el costo de las conversaciones extras, es decir, las que se contabilizan después de pasar esas 1.000. La suscripción anual se cuenta aparte."></i>`:""}</div><div class="v">${k[3]}</div><div class="s">${k[4]}</div></div></div></div>`).join("");
+  document.getElementById("sub1").textContent=inc?"Conversaciones extras + suscripción anual en su mes de cobro (USD)":"Cargos por conversaciones extras (USD); la suscripción anual no está incluida";
+
+  mk("c1",{plugins:[totalsPlugin],type:"bar",data:{labels:MC,datasets:rows.map(r=>({label:r.cuenta,backgroundColor:r.color,borderRadius:4,borderSkipped:false,
+      data:r.precios.map((p,i)=>p+(inc&&r.fechaSub&&+r.fechaSub.slice(5,7)-1===i?r.sub:0))}))},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index"},
+      scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grace:"10%",grid,border:{display:false},ticks:{callback:v=>"$"+int(v)}}},
+      plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${usd(c.parsed.y)}`,footer:it=>"Total del mes: "+usd(sum(it.map(x=>x.parsed.y)))}}}}});
+
+  const ord=[...rows].sort((a,b)=>total(b)-total(a));
+  mk("c2",{type:"bar",data:{labels:ord.map(r=>r.cuenta),datasets:[
+      {label:"Suscripción anual",backgroundColor:"#c7d2fe",data:ord.map(r=>r.sub),borderRadius:4},
+      {label:"Conversaciones extras",backgroundColor:"#f97316",data:ord.map(extras),borderRadius:4}]},
+    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,
+      scales:{x:{stacked:true,grid,border:{display:false},ticks:{callback:v=>"$"+int(v)}},y:{stacked:true,grid:{display:false}}},
+      plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${usd(c.parsed.x)}`,footer:i=>"Total: "+usd(total(ord[i[0].dataIndex]))}}}}});
+
+  const marcas=[...new Set(rows.map(r=>r.marca))], mv=marcas.map(x=>sum(rows.filter(r=>r.marca===x).map(total)));
+  mk("c5",{type:"doughnut",data:{labels:marcas,datasets:[{data:mv,backgroundColor:BRAND_PAL,borderColor:"#fff",borderWidth:3,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:"62%",plugins:{legend:{position:"bottom"},
+      tooltip:{callbacks:{label:c=>` ${c.label}: ${usd(c.parsed)} (${Math.round(c.parsed/(sum(mv)||1)*100)}%)`}}}}});
+
+  mk("c3",{type:"line",data:{labels:MC,datasets:rows.filter(r=>r.conv.some(v=>v!=null)).map(r=>({label:r.cuenta,data:r.conv,borderColor:r.color,backgroundColor:r.color,tension:.3,spanGaps:true,pointRadius:3.5,borderWidth:2.5}))},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index"},
+      scales:{x:{grid:{display:false}},y:{grid,border:{display:false},ticks:{callback:v=>int(v)}}},
+      plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${int(c.parsed.y)}`}}}}});
+
+  const rr=[...rows].sort((a,b)=>b.remarketing-a.remarketing);
+  mk("c4",{type:"bar",data:{labels:rr.map(r=>r.cuenta),datasets:[{label:"Remarketing",backgroundColor:rr.map(r=>r.color),borderRadius:6,data:rr.map(r=>r.remarketing)}]},
+    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,
+      scales:{x:{grid,border:{display:false},ticks:{callback:v=>int(v)}},y:{grid:{display:false}}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>" Envíos aprox.: "+int(c.parsed.x)}}}}});
+
+
+  const mxR=Math.max(1,...rows.flatMap(r=>r.rm));
+  const mx=Math.max(1,...rows.flatMap(r=>r.precios));
+  const cell=v=>v?`<td style="background:rgba(79,70,229,${(0.06+0.5*v/mx).toFixed(2)})">${usd(v)}</td>`:'<td class="zero">–</td>';
+  document.getElementById("tbl").innerHTML=`<thead><tr><th>Marca</th><th>Cuenta</th><th>Suscripción</th>${MC.map(x=>`<th>${x}</th>`).join("")}<th>Total anual</th><th>Conv. extras</th><th>Remarketing</th></tr></thead><tbody>`+
+    rows.map(r=>`<tr><td><span class="bdg">${r.marca}</span></td><td><span class="dot" style="background:${r.color}"></span>${r.cuenta}</td><td>${usd(r.sub)}</td>${r.precios.map(cell).join("")}<td><b>${usd(total(r))}</b></td><td>${sum(r.conv)?int(sum(r.conv)):'<span class="zero">–</span>'}</td><td>${r.remarketing?int(r.remarketing):'<span class="zero">–</span>'}</td></tr>`).join("")+
+    `</tbody><tfoot><tr><td colspan="2">TOTAL</td><td>${usd(totSub)}</td>${MC.map((_,i)=>`<td>${usd(sum(rows.map(r=>r.precios[i])))}</td>`).join("")}<td>${usd(totAll)}</td><td>${int(totConv)}</td><td>${int(totRem)}</td></tr></tfoot>`;
+}
+function init(){
+  const p=document.getElementById("pills");
+  p.innerHTML=["Todas",...new Set(DATA.map(d=>d.marca))].map(x=>`<li class="nav-item"><button class="nav-link ${x===MARCA?"active":""}" data-m="${x}">${x}</button></li>`).join("");
+  p.onclick=e=>{const b=e.target.closest("button"); if(!b)return; MARCA=b.dataset.m; p.querySelectorAll(".nav-link").forEach(n=>n.classList.toggle("active",n===b)); render();};
+  document.getElementById("fSub").onchange=render; render();
+}
+function boot(p){
+  DATA=p.data; document.getElementById("yr").textContent=p.anio; document.getElementById("upd").textContent=p.actualizado; init();
+}
+function fail(e){
+  const m=document.getElementById("msg"); m.classList.remove("d-none");
+  m.textContent="No se pudieron cargar los datos: "+(e&&e.message?e.message:e);
+  document.getElementById("kpis").innerHTML="";
+}
+if(window.google&&google.script&&google.script.run){
+  google.script.run.withSuccessHandler(boot).withFailureHandler(fail).getData();
+}else if(API_URL){
+  fetch(API_URL).then(r=>r.json()).then(j=>boot(j)).catch(fail);
+}else init();   // vista previa local con datos de ejemplo
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>function pops(){document.querySelectorAll('[data-bs-toggle="popover"]').forEach(e=>bootstrap.Popover.getOrCreateInstance(e));}new MutationObserver(pops).observe(document.body,{childList:true,subtree:true});window.addEventListener("load",pops);</script>
+</body>
+</html>
