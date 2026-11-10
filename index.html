@@ -198,7 +198,7 @@ function fail(e){
 if(window.google&&google.script&&google.script.run){
   google.script.run.withSuccessHandler(boot).withFailureHandler(fail).getData();
 }else if(API_URL){
-  fetch(API_URL).then(r=>r.json()).then(j=>boot(j)).catch(fail);
+  fetch(API_URL+(API_URL.includes("?")?"&":"?")+"format=json").then(r=>r.json()).then(j=>boot(j)).catch(fail);
 }else init();   // vista previa local con datos de ejemplo
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
